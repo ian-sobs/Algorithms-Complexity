@@ -1,3 +1,5 @@
+//Reference code: https://en.oi-wiki.org/basic/tournament-sort/
+
 #define SIZE 15
 #define MAX_SIZE SIZE*2
 #define INF 9999

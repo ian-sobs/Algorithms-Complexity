@@ -1,3 +1,5 @@
+//Reference code: https://en.oi-wiki.org/basic/tournament-sort/
+
 #include "def.h"
 
 int main(){

@@ -1,3 +1,5 @@
+//Reference code: https://en.oi-wiki.org/basic/tournament-sort/
+
 #include "def.h"
 
 void tournament_sort(int a[], int temp[], int count){

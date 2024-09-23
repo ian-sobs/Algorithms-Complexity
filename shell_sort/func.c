@@ -18,4 +18,5 @@ void printList(int arr[], int size){
     for(x = 0; x < size; ++x){
         printf("%d ", arr[x]);
     }
+    printf("\n\n");
 }

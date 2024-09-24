@@ -1,10 +1,6 @@
 #include "def.h"
 #include <stdio.h>
 
-void initHeap(HEAP *heap){
-
-}
-
 int parent(int childNdx){
     return (childNdx - 1) / 2;
 }
@@ -54,13 +50,21 @@ void pushDown(HEAP *heap, int startFrom){
         temp = heap->tree[startFrom], 
         swapWith;
 
-    for(trav = startFrom; trav <= boundary && (temp > heap->tree[leftChild(trav)] || temp > heap->tree[rightChild(trav)]);){
-        if(heap->tree[leftChild(trav)] <= heap->tree[rightChild(trav)]){
-            swapWith = leftChild(trav);
-        }
-        else{
+    for(trav = startFrom; trav <= boundary && (temp > heap->tree[leftChild(trav)] || (rightChild(trav) <= heap->lastNdx && temp > heap->tree[rightChild(trav)]));){
+
+        if(rightChild(trav) <= heap->lastNdx && heap->tree[leftChild(trav)] > heap->tree[rightChild(trav)]){
             swapWith = rightChild(trav);
         }
+        else{
+            swapWith = leftChild(trav);
+        }
+        
+        // if(heap->tree[leftChild(trav)] <= heap->tree[rightChild(trav)]){
+        //     swapWith = leftChild(trav);
+        // }
+        // else{
+        //     swapWith = rightChild(trav);
+        // }
 
         if(heap->tree[swapWith] < temp){
             heap->tree[trav] = heap->tree[swapWith];

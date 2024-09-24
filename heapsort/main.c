@@ -1,4 +1,4 @@
-#include "../def.h"
+#include<stdio.h>
 #include "def.h"
 
 int main(){
@@ -9,7 +9,9 @@ int main(){
 
     displayHeap(heap);
     heapsort(&heap);
-    display(heap);
+
+    printf("\n\n");
+    displayHeap(heap);
 
     return 0;
 }

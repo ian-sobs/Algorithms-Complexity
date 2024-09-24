@@ -4,9 +4,12 @@ typedef struct{
     int tree[SIZE], lastNdx;
 } HEAP;
 
-void initHeap(HEAP *heap);
+
+int parent(int childNdx);
+int leftChild(int parentNdx);
+int rightChild(int parentNdx);
 void heapsort(HEAP *heap);
-void heapify();
-void deleteMin();
-void displayHeap(HEAP heap);
+void heapify(HEAP *heap);
+int deleteMin(HEAP *heap);
 void pushDown(HEAP *heap, int startFrom);
+void displayHeap(HEAP heap);

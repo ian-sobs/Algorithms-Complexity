@@ -11,4 +11,5 @@ int leftChild(int parentNdx);
 int rightChild(int parentNdx);
 int winner(HEAP heap, int parent, int count);
 int removeChampion(HEAP *ptr);
-void recreateTree(HEAP *ptr);
+void recreateTree(HEAP *ptr, int count);
+HEAP createTree(int arr[], int count);

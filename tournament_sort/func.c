@@ -3,32 +3,17 @@
 #include "def.h"
 
 void tournament_sort(int a[], int temp[], int count){
-    int x , value;
-    create_tree(a, temp, &value, count);
-    for(x = 0; x < count; ++x){
-        a[x] = value; 
-        recreate(a, temp, count, &value);
+    if(count > 1){
+        int x , value;
+        create_tree(a, temp, &value, count);
+        for(x = 0; x < count; ++x){
+            a[x] = value; 
+            recreate(a, temp, count, &value);
+        }
     }
 }
 
 void create_tree(int a[], int temp[], int *value, int count){
-    //array 'temp' will have a left and right subarray from indeces 0 to n-1a, nd n to 2*n - 1 respectively.
-    //left subarray holds the indeces of elements in the right subarray who won the previous rounds. temp[1] is designated as the winner of the tournament.
-
-    //let integer i b>= 0, then (2*n - 1) - 2*i represents the variable x after the i-th iteration of the for loop. When i == 0, x == floor((2*n - 1) / 2) == n - 1, the last element of the left subarray. 
-    
-    //When i == 1, x == floor((2*n - 1 - 2) / 2) == floor((2*n - 3) / 2) == n - 2
-    
-    // When i == m, m > 1, x == floor((2*n - 1 - 2*m) / 2) == n - m - 1
-
-    // To prove that every index in the left subarray that is > 1 will have its preceding index filled after the i-th iteration, we have the proof below.
-
-    // Case 1: x == floor((2*n - 1 - 2*(m+1)) / 2) == ((2*n - 1 - 2*m - 2) / 2) - (1/2) == (2*n - 4 - 2*m) / 2 == n - m - 2
-    // Case 2: x == floor((2*n - 1 - 2*m) / 2) - 1 == n - m - 2
-
-    // Hence, every index in the left subarray > 1 will have its preceding index "filled" after the i-th iteration.
-
-    //NOTE: CODE BELOW WORKS ONLY IF THERE IS MORE THAN 1 ELEMENT IN THE ARRAY
     int x, y, k;
     for(x = 0; x < count; ++x) temp[count + x] = a[x];
     for(x = 2 * count - 1; x > 1; x -= 2){
@@ -63,3 +48,37 @@ void display(int a[], int count){
     }
     printf("\n\n");
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //array 'temp' will have a left and right subarray from indeces 0 to n-1a, nd n to 2*n - 1 respectively.
+    //left subarray holds the indeces of elements in the right subarray who won the previous rounds. temp[1] is designated as the winner of the tournament.
+
+    //let integer i b>= 0, then (2*n - 1) - 2*i represents the variable x after the i-th iteration of the for loop. When i == 0, x == floor((2*n - 1) / 2) == n - 1, the last element of the left subarray. 
+    
+    //When i == 1, x == floor((2*n - 1 - 2) / 2) == floor((2*n - 3) / 2) == n - 2
+    
+    // When i == m, m > 1, x == floor((2*n - 1 - 2*m) / 2) == n - m - 1
+
+    // To prove that every index in the left subarray that is > 1 will have its preceding index filled after the i-th iteration, we have the proof below.
+
+    // Case 1: x == floor((2*n - 1 - 2*(m+1)) / 2) == ((2*n - 1 - 2*m - 2) / 2) - (1/2) == (2*n - 4 - 2*m) / 2 == n - m - 2
+    // Case 2: x == floor((2*n - 1 - 2*m) / 2) - 1 == n - m - 2
+
+    // Hence, every index in the left subarray > 1 will have its preceding index "filled" after the i-th iteration.
+
+    //NOTE: CODE BELOW WORKS ONLY IF THERE IS MORE THAN 1 ELEMENT IN THE ARRAY

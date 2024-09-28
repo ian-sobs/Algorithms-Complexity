@@ -3,8 +3,8 @@
 #include "def.h"
 
 int main(){
-    int count = 10;
-    int a[SIZE] = {-1, -2, 3, 2, 2, 9, 7, 7, 5, 4};
+    int count = 6;
+    int a[SIZE] = {3, -2, -3, -2, 10, 9};
     int temp[MAX_SIZE] = {0};
 
     printf("Before tournament:\n");

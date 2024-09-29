@@ -1,10 +1,17 @@
 #include "def.h"
 
+// void quick_sort(int arr[], int startNdx, int lastNdx){
+//     if(startNdx < lastNdx){
+//         int pivot = lomuto_partition(arr, startNdx, lastNdx);
+//         quick_sort(arr, startNdx, pivot - 1);
+//         quick_sort(arr, pivot + 1, lastNdx);
+//     }
+// }
+
 void quick_sort(int arr[], int startNdx, int lastNdx){
     if(startNdx < lastNdx){
-        //int pivot = lomuto_partition(arr, startNdx, lastNdx);
         int pivot = hoare_partition(arr, startNdx, lastNdx);
-        quick_sort(arr, startNdx, pivot - 1);
+        quick_sort(arr, startNdx, pivot);
         quick_sort(arr, pivot + 1, lastNdx);
     }
 }
@@ -31,7 +38,7 @@ int hoare_partition(int arr[], int startNdx, int lastNdx){
         lowBndry = startNdx - 1,
         highBndry = lastNdx + 1;
 
-    while(1){
+    while(lowBndry < highBndry){
         do{
             ++lowBndry;
         } while(arr[lowBndry] < tempPivot);
@@ -41,9 +48,32 @@ int hoare_partition(int arr[], int startNdx, int lastNdx){
         } while(arr[highBndry] > tempPivot);
 
         if(lowBndry < highBndry) swap(arr + lowBndry, arr + highBndry);
-        else return highBndry;
+        
     }
+    return highBndry;
+    // while (1) {
+      
+    //     // Find leftmost element greater
+    //     // than or equal to pivot
+    //     do {
+    //         lowBndry++;
+    //     } while (arr[lowBndry] < tempPivot);
 
+    //     // Find rightmost element smaller 
+    //     // than or equal to pivot
+    //     do {
+    //         highBndry--;
+    //     } while (arr[highBndry] > tempPivot);
+
+    //     // If two pointers met
+    //     if (lowBndry >= highBndry)
+    //         return highBndry;
+
+    //     // Swap arr[i] and arr[j]
+    //     int temp = arr[lowBndry];
+    //     arr[lowBndry] = arr[highBndry];
+    //     arr[highBndry] = temp;
+    // }
 }
 
 void swap(int *a, int *b){

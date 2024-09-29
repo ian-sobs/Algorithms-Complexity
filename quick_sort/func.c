@@ -44,6 +44,7 @@ int hoare_partition(int arr[], int startNdx, int lastNdx){
         else return highBndry;
     }
 
+    
 }
 
 void swap(int *a, int *b){

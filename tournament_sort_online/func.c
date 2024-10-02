@@ -14,7 +14,7 @@ void tournamentSort_online(int arr[], int count){
 
         if(subArrBndry != NULL){
             //initializing the tree by putting values to its leaf nodes
-            //try implementing lines 18-42 as a recursive function that takes into account the allowed competitors for a tournament
+            //try implementing lines 23-42 as a recursive function that takes into account the allowed competitors for a tournament
             for(x = 0, y = parent(heap.lastNdx) + 1; y <= heap.lastNdx && arrCurrElem < count; ++y){
                 heap.tree[y] = arr[arrCurrElem++];
             }
@@ -31,7 +31,7 @@ void tournamentSort_online(int arr[], int count){
                 for(; heap.tree[0] < EMPTY; ++(subArrBndry[bndryCurr])){
                     arr[subArrBndry[bndryCurr]] = returnChampion(heap); //next element in subArrBndry which is set to 0.
                     y = promoteElems(heap, 0, competitors);
-                    heap.tree[y] = (arrCurrElem < count) ? arr[arrCurrElem++] : EMPTY;
+                    heap.tree[y] = (arrCurrElem < count && leftChild(y) > heap.lastNdx) ? arr[arrCurrElem++] : EMPTY;
                     if(arr[subArrBndry[bndryCurr]] > heap.tree[y]){
                        competitors &= (~(1 << (y - (parent(heap.lastNdx) + 1))));
                     }

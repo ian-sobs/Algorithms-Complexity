@@ -30,8 +30,10 @@ void tournamentSort_online(int arr[], int count){
                 // recursion might be needed after the for-loop below and the for-loop above might not be necessary
                 for(; heap.tree[0] < EMPTY; ++(subArrBndry[bndryCurr])){
                     arr[subArrBndry[bndryCurr]] = returnChampion(heap); //next element in subArrBndry which is set to 0.
-                    y = promoteElems(heap, 0, competitors);
-                    heap.tree[y] = (arrCurrElem < count && leftChild(y) > heap.lastNdx) ? arr[arrCurrElem++] : EMPTY;
+                    y = promoteElems(heap, 0, competitors); // 'y' may not be a leaf node if both children of an i-node cannot compete
+
+                    heap.tree[y] = (arrCurrElem < count && leftChild(y) > heap.lastNdx) ? arr[arrCurrElem++] : EMPTY; // condition guarantees that new elements can only be inserted in a leaf node (assuming not all elements in given array have been inserted)
+
                     if(arr[subArrBndry[bndryCurr]] > heap.tree[y]){
                        competitors &= (~(1 << (y - (parent(heap.lastNdx) + 1))));
                     }

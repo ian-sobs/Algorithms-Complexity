@@ -58,6 +58,8 @@ void partiallyOrder(HEAP heap, int start, int end){
 int promoteElems(HEAP heap, int hghstAvlblNode, SET competitors){
     int trav, winnerNdx;
     for(trav = hghstAvlblNode; (winnerNdx = winner(heap, leftChild(trav), rightChild(trav))) > 0 && (canCompete(competitors, leftChild(trav), heap.lastNdx) || canCompete(competitors, rightChild(trav), heap.lastNdx)); trav = winnerNdx){
+        if(canCompete(competitors, leftChild(trav), heap.lastNdx) && !canCompete(competitors, rightChild(trav), heap.lastNdx)) winnerNdx = leftChild;
+        else if(!canCompete(competitors, leftChild(trav), heap.lastNdx) && canCompete(competitors, rightChild(trav), heap.lastNdx)) winnerNdx = rightChild;
         heap.tree[trav] = heap.tree[winnerNdx];
     }
     if(winnerNdx > 0){// loop stopped because both children of node 'trav' could not compete

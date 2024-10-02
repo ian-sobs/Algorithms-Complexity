@@ -3,22 +3,69 @@
 
 void tournamentSort_online(int arr[], int count){
     HEAP heap = createHeap(4);
-    int x , y, winnerNdx, arrCurrElem = 0, temp;
+    if(heap.tree != NULL){
+        SET competitors = ~0;
+        int x , y, winnerNdx, temp, *subArrBndry, subArrBndryCount, bndryCurr, arrCurrElem = 0;
+        
+        //subArrBndry array contains the ending index of the sub-arrays we have to merge. This array is needed so that you can partition the original array and those partitions/sub-arrays can be merged 
+        subArrBndryCount = (!(count % (heap.lastNdx + 1))) ? 0 : 1;
+        subArrBndryCount += (count / (heap.lastNdx + 1));
+        subArrBndry = (int*) calloc(subArrBndryCount, sizeof(int));
 
-    for(x = count - 1, y = heap.lastNdx; x >= 0; --x){
-        heap.tree[y--] = arr[x];
-    }
+        if(subArrBndry != NULL){
+            //initializing the tree by putting values to its leaf nodes
+            for(x = 0, y = parent(heap.lastNdx) + 1; y <= heap.lastNdx && arrCurrElem < count; ++y){
+                heap.tree[y] = arr[arrCurrElem++];
+            }
 
-    for(x =  parent(heap.lastNdx); x >= 0; --x){
-        for(y = x; leftChild(y) <= heap.lastNdx; y = winnerNdx){
-            winnerNdx = (rightChild(y) <= heap.lastNdx) ? winner(heap, leftChild(y), rightChild(y)) : leftChild(y);
-            heap.tree[y] = heap.tree[winnerNdx];
-        }
-        temp = heap.tree[y] = (arrCurrElem < count) ? arr[arrCurrElem++] : EMPTY;
-        for(; y > x && temp != EMPTY; y = parent(y)){
-            heap.tree[y] = (heap.tree[parent(y)] > temp) ? heap.tree[parent(y)] : temp;
+            //filling up the tree with values where no champion has been found yet
+            for(x =  parent(heap.lastNdx); x >= 0; --x){
+                y = promoteElems(heap, x, competitors); // y here is the index of the leaf node where we insert a new element from the given array
+                heap.tree[y] = (arrCurrElem < count) ? arr[arrCurrElem++] : EMPTY;
+                partiallyOrder(heap, y, x);
+            }
+
+            for(bndryCurr = 0; bndryCurr < subArrBndryCount && arrCurrElem < count; ++bndryCurr, subArrBndry[bndryCurr] = subArrBndry[bndryCurr - 1] + 1){
+                for(; heap.tree[0] < EMPTY; ++(subArrBndry[bndryCurr])){
+                    arr[subArrBndry[bndryCurr]] = returnChampion(heap); //next element in subArrBndry which is set to 0.
+                    y = promoteElems(heap, 0, competitors);
+                    heap.tree[y] = (arrCurrElem < count) ? arr[arrCurrElem++] : EMPTY;
+                    if(arr[subArrBndry[bndryCurr]] > heap.tree[y]){
+                       competitors &= (~(1 << (y - (parent(heap.lastNdx) + 1))));
+                    }
+                    else{
+                        partiallyOrder(heap, y, 0);
+                    }
+                }
+            }
+
         }
     }
+}
+
+void partiallyOrder(HEAP heap, int start, int end){
+    if(end >= 0){
+        int trav, temp;
+        for(trav = start, temp = heap.tree[start]; trav > end && temp != EMPTY && temp < heap.tree[parent(trav)]; trav = parent(trav)){
+            heap.tree[trav] = heap.tree[parent(trav)];
+        }
+        heap.tree[trav] = temp;
+    }
+}
+
+int promoteElems(HEAP heap, int hghstAvlblNode, SET competitors){
+    int trav, winnerNdx;
+    for(trav = hghstAvlblNode; (winnerNdx = winner(heap, leftChild(trav), rightChild(trav))) > 0 && (canCompete(competitors, leftChild(trav), heap.lastNdx) || canCompete(competitors, rightChild(trav), heap.lastNdx)); trav = winnerNdx){
+        heap.tree[trav] = heap.tree[winnerNdx];
+    }
+    if(winnerNdx > 0){// loop stopped because both children of node 'trav' could not compete
+        heap.tree[trav] = EMPTY;
+    }
+    return trav;
+}
+
+int canCompete(SET competitors, int nodeNdx, int lastLeafNodeNdx){
+    return competitors & (1 << (nodeNdx - (parent(lastLeafNodeNdx) + 1)));
 }
 
 HEAP createHeap(int leafNodeCount){
@@ -41,16 +88,18 @@ int parent(int child){
 }
 
 int winner(HEAP minHeap, int leftChild, int rightChild){
-    int winner;
-    if(minHeap.tree[leftChild] < minHeap.tree[rightChild]) winner = leftChild;
-    else if(minHeap.tree[leftChild] > minHeap.tree[rightChild]) winner = rightChild;
-    else if(leftChild < rightChild) winner = leftChild;
-    else winner = rightChild;
+    int winner = -1;
+    if(leftChild <= minHeap.lastNdx){
+        winner = leftChild;
+        if(rightChild <= minHeap.lastNdx && minHeap.tree[leftChild] > minHeap.tree[rightChild]){
+            winner = rightChild;
+        }
+    }
     return winner;
 }
 
-int removeChampion(HEAP heap){
-    int champion = heap.tree[0];
-    heap.tree[0] = winner(heap, leftChild(0), rightChild(0));
-    return champion;
+int returnChampion(HEAP heap){
+    //int champion = heap.tree[0];
+    //heap.tree[0] = winner(heap, leftChild(0), rightChild(0));
+    return heap.tree[0];
 }

@@ -3,3 +3,5 @@
 typedef struct{
     int *tree, lastNdx;
 } HEAP;
+
+typedef int SET;

@@ -31,9 +31,14 @@ NODE strandSort(NODE *list){
                 (*travS)->link = NULL;
             }
         }
-
-        mergedList = strandSort(list);
-        merge(&mergedList, &sublist);
+        printf("sublist:");
+        displayLinkedList(sublist);
+        printf("list:");
+        displayLinkedList(*list);
+        printf("mergedlist:");
+        mergedList = strandSort(list); // problem
+        displayLinkedList(mergedList);
+        merge(&mergedList, &sublist); // problem
     }
     return mergedList;
 }
@@ -42,16 +47,20 @@ void merge(NODE *mergedList, NODE *subList){
     NODE temp = *mergedList, *trav = mergedList, *travS, *travT;
 
     *mergedList = NULL; // initialized the merged list to be empty because its previous content will be merged with the given sublist
+    printf("\n\ntrt\n\n");
+    displayLinkedList(*subList);
     for(travS = subList, travT = &temp; *travS != NULL && *travT != NULL; ){
         // removes the node from the list *travS and inserts it to the merged list.
         if((*travT)->data > (*travS)->data){
             *trav = *travS;
+            //printf("%d ", (*trav)->data);
             trav = &(*trav)->link;
             *travS = *trav;
             *trav = NULL;
         }
         else{
             *trav = *travT;
+            //printf("%d ", (*trav)->data);
             trav = &(*trav)->link;
             *travT = *trav;
             *trav = NULL;            
@@ -66,6 +75,7 @@ void merge(NODE *mergedList, NODE *subList){
         *trav = *travT;
         *travT = NULL;
     }
+
 }
 
 NODE initializeList(int arr[], int count){
@@ -87,6 +97,7 @@ void displayLinkedList(NODE list){
     for(trav = list; trav != NULL; trav = trav->link){
         printf("%d ", trav->data);
     }
+    printf("\n\n");
 }
 
 void deleteLinkedList(NODE *list){

@@ -3,8 +3,8 @@ typedef struct node{
     struct node *link;
 } *NODE, NODE_TYPE;
 
-void strandSort(NODE *list);
-void merge(NODE mergedList, NODE subList);
+NODE strandSort(NODE *list);
+void merge(NODE *mergedList, NODE *subList);
 
 NODE initializeList(int arr[], int count);
 void displayLinkedList(NODE list);

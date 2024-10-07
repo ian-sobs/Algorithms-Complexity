@@ -3,9 +3,10 @@
 #include <stdlib.h>
 
 
-void strandSort(NODE *list){
+NODE strandSort(NODE *list){
+    NODE mergedList = NULL;
     if(*list != NULL){
-        NODE sublist, mergedList, *travG, *travS;
+        NODE sublist, *travG, *travS, temp;
 
         // First element of the given list is put into an empty sublist 
         travS = &sublist;
@@ -31,16 +32,17 @@ void strandSort(NODE *list){
             }
         }
 
-        merge(mergedList, sublist);
-        strandSort(list);
+        mergedList = strandSort(list);
+        merge(&mergedList, &sublist);
     }
+    return mergedList;
 }
 
-void merge(NODE mergedList, NODE subList){
-    NODE temp = mergedList, *trav = &mergedList, *travS, *travT;
+void merge(NODE *mergedList, NODE *subList){
+    NODE temp = *mergedList, *trav = mergedList, *travS, *travT;
 
-    mergedList = NULL; // initialized the merged list to be empty because its previous content will be merged with the given sublist
-    for(travS = &subList, travT = &temp; *travS != NULL && *travT != NULL; ){
+    *mergedList = NULL; // initialized the merged list to be empty because its previous content will be merged with the given sublist
+    for(travS = subList, travT = &temp; *travS != NULL && *travT != NULL; ){
         // removes the node from the list *travS and inserts it to the merged list.
         if((*travT)->data > (*travS)->data){
             *trav = *travS;

@@ -20,7 +20,7 @@ NODE strandSort(NODE *list){
 
         // for loop doesnt execute if *travG is empty list
         // sublist guaranteed to have at least 1 element
-        for(travG = list; *travG != NULL; travG = &(*travG)->link){
+        for(travG = list; *travG != NULL; ){
             // if the last element in the sublist is less than an element in the given list, that element in the given list in inserted as a last element in the sublist. That element is also no longer in the given list.
             if((*travG)->data > (*travS)->data){ 
                 travS = &(*travS)->link;
@@ -30,14 +30,17 @@ NODE strandSort(NODE *list){
 
                 (*travS)->link = NULL;
             }
+            else{
+                travG = &(*travG)->link;
+            }
         }
-        printf("sublist:");
-        displayLinkedList(sublist);
-        printf("list:");
-        displayLinkedList(*list);
-        printf("mergedlist:");
+        // printf("\n\nsublist:");
+        // displayLinkedList(sublist);
+        // printf("list:");
+        // displayLinkedList(*list);
+        // printf("mergedlist:");
         mergedList = strandSort(list); // problem
-        displayLinkedList(mergedList);
+        //displayLinkedList(mergedList);
         merge(&mergedList, &sublist); // problem
     }
     return mergedList;
@@ -47,8 +50,8 @@ void merge(NODE *mergedList, NODE *subList){
     NODE temp = *mergedList, *trav = mergedList, *travS, *travT;
 
     *mergedList = NULL; // initialized the merged list to be empty because its previous content will be merged with the given sublist
-    printf("\n\ntrt\n\n");
-    displayLinkedList(*subList);
+    // printf("\n\ntrt\n\n");
+    // displayLinkedList(*subList);
     for(travS = subList, travT = &temp; *travS != NULL && *travT != NULL; ){
         // removes the node from the list *travS and inserts it to the merged list.
         if((*travT)->data > (*travS)->data){

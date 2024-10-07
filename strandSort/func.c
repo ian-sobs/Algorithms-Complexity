@@ -1,5 +1,7 @@
 #include "def.h"
+#include <stdio.h>
 #include <stdlib.h>
+
 
 void strandSort(NODE *list){
     if(*list != NULL){
@@ -22,12 +24,9 @@ void strandSort(NODE *list){
             if((*travG)->data > (*travS)->data){ 
                 travS = &(*travS)->link;
                 *travS = *travG;
-                if((*travG)->link != NULL){
-                    *travG = (*travG)->link->link;
-                } 
-                else{
-                    *travG = NULL;
-                }
+                
+                *travG = (*travG)->link;
+
                 (*travS)->link = NULL;
             }
         }
@@ -77,6 +76,22 @@ NODE initializeList(int arr[], int count){
             trav = &(*trav)->link;
         }
     }
-
+    *trav = NULL;
     return list;
+}
+
+void displayLinkedList(NODE list){
+    NODE trav;
+    for(trav = list; trav != NULL; trav = trav->link){
+        printf("%d ", trav->data);
+    }
+}
+
+void deleteLinkedList(NODE *list){
+    NODE *trav, temp;
+    for(trav = list; *trav != NULL; ){
+        temp = *trav;
+        *trav = temp->link;
+        free(temp);
+    }
 }

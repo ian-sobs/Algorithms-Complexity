@@ -8,6 +8,7 @@ int main(){
     NODE list = initializeList(arr, count);
     printList(arr, count);
     strandSort(&list);
-
+    displayLinkedList(list);
+    deleteLinkedList(&list);
     return 0;
 }
